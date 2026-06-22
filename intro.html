@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Plan. Focus. Achieve.</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- FullCalendar CSS and JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="dark">
+
+    <!-- HEADER -->
+    <header class="top-header glass-panel">
+        <div class="logo-area">
+            <div class="logo-icon-container">
+                <i class="fa-solid fa-layer-group logo-icon"></i>
+            </div>
+            <div class="brand-text">
+                <h1>TaskFlow</h1>
+                <span class="tagline">Plan. Focus. Achieve.</span>
+            </div>
+        </div>
+        
+        <div class="search-area glass-input-container">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" id="global-search" class="glass-input" placeholder="Search tasks...">
+        </div>
+
+        <div class="header-actions">
+            <button class="icon-btn" id="notification-btn" title="Notifications">
+                <i class="fa-regular fa-bell"></i>
+                <span class="notification-badge hidden" id="notification-badge"></span>
+            </button>
+            <button class="icon-btn theme-toggle-btn" id="theme-toggle" title="Toggle Theme">
+                <i class="fa-solid fa-sun" id="theme-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- SECTION 1: TASK MANAGEMENT -->
+        <section id="task-management" class="section">
+            <div class="section-content">
+                
+                <div class="task-box-container glass-panel" id="task-box-container">
+                    <!-- Collapsed State -->
+                    <div class="task-box-collapsed" id="task-box-collapsed">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Create a task...</span>
+                    </div>
+                    
+                    <!-- Expanded State -->
+                    <div class="task-box-expanded hidden" id="task-box-expanded">
+                        <input type="text" id="task-title-input" class="glass-input large-input" placeholder="What needs to be done?">
+                        
+                        <div class="task-box-controls">
+                            <div class="difficulty-selector">
+                                <span class="control-label">Difficulty:</span>
+                                <div class="diff-circles">
+                                    <div class="diff-circle hard" data-diff="hard" title="Hard"></div>
+                                    <div class="diff-circle medium" data-diff="medium" title="Medium"></div>
+                                    <div class="diff-circle easy" data-diff="easy" title="Easy"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="deadline-selector">
+                                <span class="control-label" style="margin-right: 8px;">Deadline:</span>
+                                <div class="glass-input-container small">
+                                    <i class="fa-regular fa-calendar"></i>
+                                    <input type="datetime-local" id="task-deadline-input" class="glass-input">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="task-box-actions">
+                            <button class="btn-cancel" id="cancel-task-btn">Cancel</button>
+                            <button class="btn-primary" id="add-task-btn">Add Task</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-controls">
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="active">Active</button>
+                        <button class="filter-btn" data-filter="completed">Completed</button>
+                    </div>
+                </div>
+
+                <div class="task-list" id="task-list">
+                    <!-- Task cards will be injected here by JS -->
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 2: ANALYTICS -->
+        <section id="analytics" class="section">
+            <h2 class="section-title">Analytics</h2>
+            <div class="analytics-layout">
+                
+                <div class="chart-wrapper glass-panel">
+                    <h3 class="card-title">Difficulty Distribution</h3>
+                    <div class="canvas-container">
+                        <canvas id="difficultyChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="stats-wrapper">
+                    <div class="progress-card glass-panel">
+                        <h3 class="card-title">Overall Progress</h3>
+                        <div class="progress-info">
+                            <span class="progress-percentage" id="overall-percentage">0%</span>
+                            <span class="progress-text">completed</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="overall-progress-bar"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card glass-panel">
+                            <div class="stat-icon-wrapper purple-bg">
+                                <i class="fa-solid fa-list-check"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="stat-total">0</span>
+                                <span class="stat-label">Total Tasks</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card glass-panel">
+                            <div class="stat-icon-wrapper green-bg">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="stat-completed">0</span>
+                                <span class="stat-label">Completed</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card glass-panel">
+                            <div class="stat-icon-wrapper yellow-bg">
+                                <i class="fa-regular fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="stat-pending">0</span>
+                                <span class="stat-label">Pending</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card glass-panel">
+                            <div class="stat-icon-wrapper red-bg">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="stat-overdue">0</span>
+                                <span class="stat-label">Overdue</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 3: CALENDAR -->
+        <section id="calendar-section" class="section">
+            <h2 class="section-title">Calendar</h2>
+            <div class="calendar-layout">
+                
+                <div class="calendar-wrapper glass-panel">
+                    <div id="calendar"></div>
+                </div>
+                
+                <div class="calendar-side-panels">
+                    <div class="date-card glass-panel" id="date-card-created">
+                        <h3 class="card-title">Created On <br><span class="selected-date-text highlight-text">Selected Date</span></h3>
+                        <div class="date-task-list" id="created-on-list">
+                            <div class="empty-state">Select a date</div>
+                        </div>
+                    </div>
+                    
+                    <div class="date-card glass-panel" id="date-card-deadline">
+                        <h3 class="card-title">Deadline On <br><span class="selected-date-text highlight-text">Selected Date</span></h3>
+                        <div class="date-task-list" id="deadline-on-list">
+                            <div class="empty-state">Select a date</div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+
+        <footer style="text-align: center; padding: 20px 0; color: var(--text-secondary); font-size: 0.9rem; margin-top: 40px; border-top: 1px solid var(--glass-border);">
+            Designed and built with ❤️ by Harshith Kotla. "Plan. Focus. Achieve."
+        </footer>
+    </main>
+
+    <!-- Edit Task Modal -->
+    <div class="modal-overlay hidden" id="edit-modal">
+        <div class="modal-content glass-panel">
+            <h2 class="modal-title">Edit Task</h2>
+            <div class="modal-body">
+                <input type="text" id="edit-task-title" class="glass-input large-input" placeholder="Task name">
+                
+                <div class="task-box-controls">
+                    <div class="difficulty-selector">
+                        <span class="control-label">Difficulty:</span>
+                        <div class="diff-circles">
+                            <div class="diff-circle hard" data-diff="hard" id="edit-diff-hard" title="Hard"></div>
+                            <div class="diff-circle medium" data-diff="medium" id="edit-diff-medium" title="Medium"></div>
+                            <div class="diff-circle easy" data-diff="easy" id="edit-diff-easy" title="Easy"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="deadline-selector">
+                        <span class="control-label" style="margin-right: 8px;">Deadline:</span>
+                        <div class="glass-input-container small">
+                            <i class="fa-regular fa-calendar"></i>
+                            <input type="datetime-local" id="edit-task-deadline" class="glass-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn-cancel" id="cancel-edit-btn">Cancel</button>
+                <button class="btn-primary" id="save-edit-btn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

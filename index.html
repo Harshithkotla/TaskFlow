@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to TaskFlow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .intro-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: radial-gradient(circle at center, var(--bg-secondary), var(--bg-main));
+        }
+        .intro-card {
+            max-width: 600px;
+            text-align: center;
+            padding: 60px 40px;
+            animation: fadeIn 1s ease-out;
+            border-radius: 24px;
+        }
+        .intro-logo {
+            display: block;
+            margin: 0 auto 24px auto;
+            text-align: center;
+            font-size: 4rem;
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+        .intro-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff, #d8b4fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .intro-description {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        .intro-features {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 48px;
+            flex-wrap: wrap;
+        }
+        .intro-feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+            background: var(--bg-tertiary);
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+        .intro-feature i {
+            color: var(--accent);
+        }
+        .continue-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.2rem;
+            padding: 16px 40px;
+            border-radius: 30px;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+            transition: all 0.3s ease;
+        }
+        .continue-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.6);
+            color: white;
+        }
+        .continue-btn i {
+            transition: transform 0.3s ease;
+        }
+        .continue-btn:hover i {
+            transform: translateX(5px);
+        }
+        
+        [data-theme="light"] .intro-title {
+            background: linear-gradient(135deg, var(--text-primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <!-- Ensure theme persists on the intro page as well -->
+    <script>
+        const savedTheme = localStorage.getItem('taskflow_theme') || 'dark';
+        document.body.setAttribute('data-theme', savedTheme);
+    </script>
+
+    <div class="intro-container">
+        <div class="intro-card glass-panel">
+            <i class="fa-solid fa-layer-group intro-logo"></i>
+            <h1 class="intro-title">TaskFlow</h1>
+            <p class="intro-description">
+                Welcome to the ultimate premium productivity workspace. 
+                Seamlessly manage your tasks, visualize your progress with live analytics, 
+                and stay ahead of deadlines with our smart calendar integration.
+            </p>
+            
+            <div class="intro-features">
+                <div class="intro-feature"><i class="fa-solid fa-check-double"></i> Smart Tasks</div>
+                <div class="intro-feature"><i class="fa-solid fa-chart-pie"></i> Live Analytics</div>
+                <div class="intro-feature"><i class="fa-regular fa-calendar-days"></i> Calendar View</div>
+            </div>
+
+            <a href="intro.html" class="continue-btn">
+                Continue to TaskFlow <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
